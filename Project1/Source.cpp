@@ -17,7 +17,13 @@ public:
 		x = x_in;
 		y = y_in;
 	}
+
+	string to_string() {};
 };
+
+string coordinate::to_string() {
+	string result = NULL;
+}
 
 class coordinate_pair {
 public:
@@ -71,7 +77,28 @@ public:
 		head = NULL;
 	}
 
+	void Print();
+	void Append(coordinate data);
+	void Delete(coordinate data);
 };
+
+void Star_List::Print() {
+	
+	//Temperary pointer
+	Node *tmp = head;
+
+	//Check if the list is empty
+	if (tmp == NULL) {
+		cout << "ERROR at Print(), List Empty" << endl;
+		return;
+	}
+
+	//Check if there is only one elemtn
+	if (tmp->next == NULL) {
+		cout << tmp->current;
+		cout << "-->";
+	}
+}
 
 bool compare_cor(coordinate a, coordinate b) {
 	if (a.x == b.x && a.y == b.y) {
@@ -113,5 +140,5 @@ void main() {
 	cin >> totalNum;
 
 	coordinate* all_stars = new coordinate[totalNum];
-
+	
 }
