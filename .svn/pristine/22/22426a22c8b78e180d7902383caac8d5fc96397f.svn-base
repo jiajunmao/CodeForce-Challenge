@@ -5,8 +5,6 @@ using namespace std;
 
 //Declaration
 class line;
-Star_List rest_stars;
-Star_List visited_stars;
 
 //Define coordinate class
 class coordinate {
@@ -337,50 +335,12 @@ Star_List input_handle() {
 	return list;
 }
 
-bool starpair_backtrack(Star_List rest, Star_List visited, line current_line) {
-
+bool starpair_backtrack(Star_List rest_stars, Star_List visited_stars, line current_line) {
+	
 	//Pointer for traversing the rest_stars
 	Node_Cor *tmp = rest_stars.head;
 
-	//FAILSAFE: if two list has the same amount of stars
-	if (rest_stars.Length() == visited_stars.Length())
-		return true;
-
-	//BASECASE: if two list has one element in difference
-	if (rest_stars.Length() - visited_stars.Length() == 1) {
-		visited_stars = NULL;
-		coordinate tmp = NULL;
-		Node_Cor *traverser = rest_stars.head;
-
-		while (visited_stars.Contains(traverser->current))
-			traverser = traverser->next;
-
-		visited_stars.Append(traverser->current);
-
-		return true;
-	}
-
-	//Define the coordinate pair for the current backtrack choice
-	coordinate_pair choice = NULL;
-
-	//Select two elements from the unvisited stars and form a pair
-	for (int i = 0; i < 1; i++) {
-		while (visited_stars.Contains(tmp->current)) {
-			tmp = tmp->next;
-		}
-		if (choice.is_equal(NULL))
-			choice.first = tmp->current;
-		else
-			choice.second = tmp->current;
-	}
-	
-	//RECURSIVECASE: Compute the current line and the cross point
-	line choice_line = compute_equation(choice.first, choice.second);
-	coordinate choice_cross = NULL;
-	if (cross_point(current_line, choice_line).is_equal(NULL))
-		visited_stars.Append(choice.second);
-}
-
-void main() {
-	rest_stars = input_handle;
+	//Check if the rest_stars list only has two elements left
+	if (rest_stars.Length() == visited_stars.Length()) 
+		
 }

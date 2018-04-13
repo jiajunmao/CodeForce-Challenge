@@ -3,11 +3,6 @@
 #include <string>
 using namespace std;
 
-//Declaration
-class line;
-Star_List rest_stars;
-Star_List visited_stars;
-
 //Define coordinate class
 class coordinate {
 public:
@@ -24,9 +19,7 @@ public:
 	}
 
 	string to_str();
-	bool on_line(line data);
 	bool is_equal(coordinate comp);
-	bool is_equal(int null);
 };
 
 string coordinate::to_str() {
@@ -38,17 +31,6 @@ string coordinate::to_str() {
 
 bool coordinate::is_equal(coordinate comp) {
 	return x == comp.x && y == comp.y;
-}
-
-bool coordinate::is_equal(int null) {
-	if (x == NULL && y == NULL)
-		return true;
-	else
-		return false;
-}
-
-bool coordinate::on_line(line data) {
-	return (data.x_coefficient * x + data.y_intercept) == y * data.y_coefficient;
 }
 
 bool is_equal(coordinate a, coordinate b) {
@@ -71,18 +53,10 @@ public:
 	}
 
 	bool is_equal(coordinate_pair comp);
-	bool is_equal(int null);
 };
 
 bool coordinate_pair::is_equal(coordinate_pair comp) {
 	return comp.first.is_equal(first) && comp.second.is_equal(second);
-}
-
-bool coordinate_pair::is_equal(int null) {
-	if (first.is_equal(NULL) && second.is_equal(NULL))
-		return true;
-	else
-		return false;
 }
 
 bool is_equal(coordinate_pair a, coordinate_pair b) {
@@ -337,50 +311,15 @@ Star_List input_handle() {
 	return list;
 }
 
-bool starpair_backtrack(Star_List rest, Star_List visited, line current_line) {
+bool current_starpair_backtrack(coordinate_pair star_pair, coordinate current_choice, Star_List rest_stars, Star_List visited_stars) {
+	//Compute the line for the current star pair
+	line current_pair = compute_equation(star_pair.first, star_pair.second);
 
 	//Pointer for traversing the rest_stars
 	Node_Cor *tmp = rest_stars.head;
 
-	//FAILSAFE: if two list has the same amount of stars
-	if (rest_stars.Length() == visited_stars.Length())
-		return true;
-
-	//BASECASE: if two list has one element in difference
-	if (rest_stars.Length() - visited_stars.Length() == 1) {
-		visited_stars = NULL;
-		coordinate tmp = NULL;
-		Node_Cor *traverser = rest_stars.head;
-
-		while (visited_stars.Contains(traverser->current))
-			traverser = traverser->next;
-
-		visited_stars.Append(traverser->current);
-
-		return true;
+	//Check whether the element in rest_stars is contained in visited_stars. 
+	while (visited_stars.Contains(tmp->current)) {
+		tmp = tmp->next;
 	}
-
-	//Define the coordinate pair for the current backtrack choice
-	coordinate_pair choice = NULL;
-
-	//Select two elements from the unvisited stars and form a pair
-	for (int i = 0; i < 1; i++) {
-		while (visited_stars.Contains(tmp->current)) {
-			tmp = tmp->next;
-		}
-		if (choice.is_equal(NULL))
-			choice.first = tmp->current;
-		else
-			choice.second = tmp->current;
-	}
-	
-	//RECURSIVECASE: Compute the current line and the cross point
-	line choice_line = compute_equation(choice.first, choice.second);
-	coordinate choice_cross = NULL;
-	if (cross_point(current_line, choice_line).is_equal(NULL))
-		visited_stars.Append(choice.second);
-}
-
-void main() {
-	rest_stars = input_handle;
 }
